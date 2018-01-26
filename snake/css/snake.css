@@ -1,0 +1,11 @@
+.container {
+  max-width: 90%;
+  margin: 0px auto;
+  text-align: center;
+  padding-top: 40px;
+}
+
+#SnakeGameArea {
+  max-width: 600px;
+  background-color: #dbdbdb;
+}
