@@ -24,3 +24,73 @@ a {
 	max-width: 90%;
 	margin: 0px auto;
 }
+
+.img-fluid {
+	max-width: 100%;
+	height: auto;
+}
+
+.panel {
+	border-left: 4px solid #2e7d32;
+	background-color: #4caf50;
+	color: #fff;
+	padding: 10px;
+	width: 100%;
+	box-sizing: border-box;
+}
+
+.credits {
+	text-align: center;
+	margin: 20px;
+}
+
+.btn-blue {
+	border: none;
+	outline: none;
+	padding: 10px 16px;
+	margin: 10px 0px;
+	background-color: #5ca5cc;
+	color: #fff;
+	border-radius: 8px;
+	cursor: pointer;
+}
+
+/* Grid Styling */
+.row {
+	margin-left: -8px;
+	margin-right: -8px;
+	margin-top: 16px;
+	justify-content: space-between;
+	flex-wrap: wrap;
+}
+
+.col-2 {
+	flex-basis: calc(2/12 * 100%);
+	padding-left: 8px;
+	padding-right: 8px;
+	box-sizing: border-box;
+}
+
+.col-10 {
+	flex-basis: calc(10/12 * 100%);
+	padding-left: 8px;
+	padding-right: 8px;
+	box-sizing: border-box;
+}
+
+.card {
+	padding: 12px;
+	background-color: #fff;
+}
+
+@media (max-width: 575px) {
+	.center-xs {
+		text-align: center;
+	}
+}
+
+@media (min-width: 575px) {
+	.row {
+		display: flex;
+	}
+}

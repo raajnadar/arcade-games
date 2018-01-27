@@ -1,43 +1,73 @@
 document.onreadystatechange = function () {
   'use strict';
-  
+
+  var area, snake, chicken, scorebg;
   var velocityX = -1, velocityY = 0;
   var posX = 15, posY = 15;
   var chickX = 10, chickY = 10;
   var grid = 10, tiles = 30;
   var snakeBody = [], snakeLen = 5, score = 0;
-  
+
   if (document.readyState === 'complete') {
-    var canvas = document.querySelector('#SnakeGameArea');
-    var context = canvas.getContext("2d");
-    canvas.width = 300;
-    canvas.height = 320;
-    
-    setInterval(runGame, 100);
+    var controller = {
+      canvas : document.querySelector('#SnakeGameArea'),
+      start : function() {
+        this.canvas.width = 300;
+        this.canvas.height = 320;
+        this.context = this.canvas.getContext("2d");
+        this.interval = setInterval(runGame, 100);
+      },
+      clear: function() {
+        clearInterval(this.interval);
+      }
+    }
+
+    controller.start();
   }
-  
-  function getKeyCode(e) {
+
+  function getDirection(e) {
     switch (e.keyCode) {
       case 37:
-        velocityX = -1;
-        velocityY = 0;
+        if (velocityX !== 1) {
+          velocityX = -1;
+          velocityY = 0;
+        }
         break;
       case 38:
-        velocityX = 0;
-        velocityY = -1;
+        if (velocityY !== 1) {
+          velocityX = 0;
+          velocityY = -1;
+        }
         break;
       case 39:
-        velocityX = 1;
-        velocityY = 0;
+        if (velocityX !== -1) {
+          velocityX = 1;
+          velocityY = 0;
+        }
         break;
       case 40:
-        velocityX = 0;
-        velocityY = 1;
+        if (velocityY !== -1) {
+          velocityX = 0;
+          velocityY = 1;
+        }
         break;
     }
   }
 
-  function runGame() {    
+  function component(name, context, color, px, py, width, height) {
+    controller.context.fillStyle = color;
+    if (name === 'area') {
+      context.fillRect(px, py, width, height);
+    } else if (name === 'snake') {
+      context.fillRect(px, py, width, height);
+    } else if (name === 'chicken') {
+      context.fillRect(px, py, width, height);
+    } else if (name === 'scorebg') {
+      context.fillRect(px, py, width, height);
+    }
+  }
+
+  function runGame() {
     posX += velocityX;
     posY += velocityY;
 
@@ -53,19 +83,18 @@ document.onreadystatechange = function () {
     if (posY > tiles - 1) {
       posY = 0;
     }
-    
-    context.fillStyle = 'black';
-    context.fillRect(0,0, canvas.width, canvas.height);
-    
-    context.fillStyle = 'white';
-    context.fillText("Score : " + score, 10, 315);
 
-    context.fillStyle = 'lime';
+    area = new component('area', controller.context, 'black', 0, 0 , controller.canvas.width, controller.canvas.height - 20);
+
+    scorebg = new component('scorebg', controller.context, 'blue', 0, 300, controller.canvas.width, 20);
+
+    controller.context.fillStyle = 'white';
+    controller.context.fillText("Score : " + score, 8, 314);
+
     for (var i = 0; i < snakeBody.length; i++) {
-      context.fillRect(snakeBody[i].valueX * grid, snakeBody[i].valueY * grid, grid - 2, grid - 2);
+      snake = new component('snake', controller.context, 'lime', snakeBody[i].valueX * grid, snakeBody[i].valueY * grid, grid - 2, grid - 2);
       if (snakeBody[i].valueX == posX && snakeBody[i].valueY == posY) {
-        snakeLen = 5;
-        score = 0;
+        controller.clear();
       }
     }
 
@@ -85,8 +114,7 @@ document.onreadystatechange = function () {
       chickY = Math.floor(Math.random() * tiles);
     }
 
-    context.fillStyle = 'orange';
-    context.fillRect(chickX * grid, chickY * grid, grid - 2, grid  - 2);
-    document.addEventListener('keydown', getKeyCode);
+    chicken = new component('chicken', controller.context, 'orange', chickX * grid, chickY * grid, grid - 2, grid - 2);
+    document.addEventListener('keydown', getDirection);
   }
 };
