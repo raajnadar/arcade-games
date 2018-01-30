@@ -1,7 +1,7 @@
 document.onreadystatechange = function () {
   'use strict';
 
-  var area, snake, chicken, scorebg;
+  var area, snake, chicken, scorebg, over, lock = false;
   var velocityX = -1, velocityY = 0;
   var posX = 15, posY = 15;
   var chickX = 10, chickY = 10;
@@ -19,6 +19,8 @@ document.onreadystatechange = function () {
       },
       clear: function() {
         clearInterval(this.interval);
+        controller.context.fillStyle = 'white';
+        controller.context.fillText('Game Over!', (controller.canvas.width / 2) - 20, controller.canvas.height / 2);
       }
     }
 
@@ -26,31 +28,37 @@ document.onreadystatechange = function () {
   }
 
   function getDirection(e) {
-    switch (e.keyCode) {
-      case 37:
-        if (velocityX !== 1) {
-          velocityX = -1;
-          velocityY = 0;
-        }
-        break;
-      case 38:
-        if (velocityY !== 1) {
-          velocityX = 0;
-          velocityY = -1;
-        }
-        break;
-      case 39:
-        if (velocityX !== -1) {
-          velocityX = 1;
-          velocityY = 0;
-        }
-        break;
-      case 40:
-        if (velocityY !== -1) {
-          velocityX = 0;
-          velocityY = 1;
-        }
-        break;
+    if (lock == false) {
+      switch (e.keyCode) {
+        case 37:
+          if (velocityX !== 1) {
+            velocityX = -1;
+            velocityY = 0;
+            lock = true;
+          }
+          break;
+        case 38:
+          if (velocityY !== 1) {
+            velocityX = 0;
+            velocityY = -1;
+            lock = true;
+          }
+          break;
+        case 39:
+          if (velocityX !== -1) {
+            velocityX = 1;
+            velocityY = 0;
+            lock = true;
+          }
+          break;
+        case 40:
+          if (velocityY !== -1) {
+            velocityX = 0;
+            velocityY = 1;
+            lock = true;
+          }
+          break;
+      }
     }
   }
 
@@ -116,5 +124,9 @@ document.onreadystatechange = function () {
 
     chicken = new component('chicken', controller.context, 'orange', chickX * grid, chickY * grid, grid - 2, grid - 2);
     document.addEventListener('keydown', getDirection);
+
+    if (lock) {
+      lock = false;
+    }
   }
 };
