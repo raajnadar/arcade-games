@@ -13,14 +13,15 @@ document.onreadystatechange = function () {
       canvas : document.querySelector('#SnakeGameArea'),
       start : function() {
         this.canvas.width = 300;
-        this.canvas.height = 320;
+        this.canvas.height = 330;
         this.context = this.canvas.getContext("2d");
         this.interval = setInterval(runGame, 100);
       },
       clear: function() {
         clearInterval(this.interval);
         controller.context.fillStyle = 'white';
-        controller.context.fillText('Game Over!', (controller.canvas.width / 2) - 20, controller.canvas.height / 2);
+				controller.context.font = '16px Calibri';
+        controller.context.fillText('Game Over!', (controller.canvas.width / 2) - 40, controller.canvas.height / 2);
       }
     }
 
@@ -94,10 +95,11 @@ document.onreadystatechange = function () {
 
     area = new component('area', controller.context, 'black', 0, 0 , controller.canvas.width, controller.canvas.height - 20);
 
-    scorebg = new component('scorebg', controller.context, 'blue', 0, 300, controller.canvas.width, 20);
+    scorebg = new component('scorebg', controller.context, 'blue', 0, 300, controller.canvas.width, 30);
 
     controller.context.fillStyle = 'white';
-    controller.context.fillText("Score : " + score, 8, 314);
+		controller.context.font = '16px Calibri';
+    controller.context.fillText("Score : " + score, 10, 320);
 
     for (var i = 0; i < snakeBody.length; i++) {
       snake = new component('snake', controller.context, 'lime', snakeBody[i].valueX * grid, snakeBody[i].valueY * grid, grid - 2, grid - 2);
